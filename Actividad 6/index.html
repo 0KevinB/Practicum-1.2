@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Análisis de Texto</title>
+</head>
+<body>
+    <h1>Análisis de Texto</h1>
+    
+    <textarea id="textos" rows="4" cols="50" placeholder="Ingresa los textos separados por salto de línea"></textarea>
+    <br>
+    <button onclick="analyzeText()">Analizar</button>
+    <br>
+    <div id="resultado"></div>
+
+    <script>
+        function analyzeText() {
+            const textosInput = document.getElementById('textos');
+            const textos = textosInput.value.split('\n').filter(Boolean);
+
+            fetch('http://localhost:8000/analyze/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(textos)
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayResult(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function displayResult(result) {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '';
+
+            for (const record of result['Analisis de texto']) {
+                resultadoDiv.innerHTML += `
+                    <h2>RA: ${record['RA']}</h2>
+                    <ul>
+                        <li>Pronombres: ${record['Pronombres']}</li>
+                        <li>Sustantivos: ${record['Sustantivos']}</li>
+                        <li>Adjetivos: ${record['Adjetivos']}</li>
+                        <li>Verbos: ${record['Verbos']}</li>
+                        <li>Adverbios: ${record['Adverbios']}</li>
+                        <li>Auxiliares: ${record['Auxiliares']}</li>
+                        <li>Adposiciones: ${record['Adposiciones']}</li>
+                        <li>Puntuación: ${record['Puntuacion']}</li>
+                        <li>Determinantes: ${record['Determinantes']}</li>
+                        <li>Conjunciones: ${record['Conjunciones']}</li>
+                    </ul>
+                    <hr>
+                `;
+            }
+
+            for (const record of result['Eagles']) {
+                resultadoDiv.innerHTML += `
+                    <h3>RA: ${record['RA']}</h3>
+                    <table>
+                        <tr>
+                            <th>Token</th>
+                            <th>Lemma</th>
+                            <th>POS (UD)</th>
+                            <th>POS (EAGLES)</th>
+                        </tr>
+                        <tr>
+                            <td>${record['Token']}</td>
+                            <td>${record['Lemma']}</td>
+                            <td>${record['POS (UD)']}</td>
+                            <td>${record['POS (EAGLES)']}</td>
+                        </tr>
+                    </table>
+                    <hr>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Text Analysis</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="p-5">
+        <div class="container">
+            <h1 class="mb-4">Analizador de Texto</h1>
+            <div id="text-input-container">
+                <!-- Los campos de texto serán añadidos aquí -->
+            </div>
+            <div class="d-flex justify-content-start mb-3">
+                <button class="btn btn-secondary mr-2" onclick="addTextInput()">Agregar texto</button>
+                <button class="btn btn-primary" onclick="analyzeText()">Analizar</button>
+            </div>
+            <h2 class="mt-5">Resultados:</h2>
+            <div id="result"></div>
+        </div>
+
+        <script src="main.js"></script>
+    </body>
+</html>
